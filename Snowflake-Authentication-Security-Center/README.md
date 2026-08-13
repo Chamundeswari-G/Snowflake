@@ -139,9 +139,3 @@ snowflake-authentication-security-center/
 ## Suggested repository description
 
 > Focused Streamlit dashboard for Snowflake authentication posture, legacy service-account password adoption, authentication methods, human-user risk, query investigation, and application activity.
-
-## Security / privacy note
-
-Do not publish production account names, usernames, query text, exported audit data, screenshots containing sensitive identifiers, or credentials in the public repository.
-
-This project is intended as an example analytics and security-monitoring workflow. Adapt permissions, data scope, classification logic, and retention practices to your organization's security requirements.
