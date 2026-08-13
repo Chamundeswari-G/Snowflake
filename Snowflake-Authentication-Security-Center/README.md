@@ -11,6 +11,8 @@ A focused **Streamlit in Snowflake** application for analyzing Snowflake authent
 Snowflake is rolling out stronger authentication requirements for both **human users** and **non-human service users**.
 
 Snowflake's Phase 3 enforcement is being rolled out account-by-account from **August through October 2026**.
+<img width="887" height="217" alt="image" src="https://github.com/user-attachments/assets/18416fae-a5c3-470c-9980-9129674472a4" />
+
 
 The change affects the two identity types differently:
 
@@ -137,7 +139,8 @@ The goal is to turn strong-authentication migration from a configuration exercis
 
 # Dashboard Preview
 
-![Snowflake Authentication Security Center](screenshots/01-overview.png)
+<img width="1850" height="922" alt="image" src="https://github.com/user-attachments/assets/d2004215-f7dc-4936-8265-90aedffcbe88" />
+
 
 The overview provides an immediate view of:
 
