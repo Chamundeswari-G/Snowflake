@@ -545,7 +545,3 @@ Instead, it provides a focused analytical view of **observed authentication beha
 - Snowflake `ACCOUNT_USAGE.QUERY_HISTORY`
 
 ---
-
-# Repository Description
-
-> Streamlit in Snowflake dashboard for monitoring legacy service-account password usage, strong-authentication migration readiness, authentication methods, human-user posture, and application activity.
