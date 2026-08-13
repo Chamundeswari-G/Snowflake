@@ -1,5 +1,5 @@
 ## Dashboard Preview
 
 Authentication Security Center
-<img width="1911" height="1082" alt="image" src="https://github.com/user-attachments/assets/35a75558-ced8-4fcc-829d-f57a95aaae55" />
+<img width="1916" height="992" alt="image" src="https://github.com/user-attachments/assets/dbf1b6d2-9a48-4fd0-a3ac-0bc042ed5195" />
 
