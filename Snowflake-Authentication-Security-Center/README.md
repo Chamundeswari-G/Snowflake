@@ -124,14 +124,16 @@ This provides a high-level view of which client applications are generating sess
 
 ```text
 snowflake-authentication-security-center/
-├── streamlit_app.py
+├── Snowflake_authentication_security_streamlit_app
 ├── README.md
 ├── requirements.txt
-├── .gitignore
-└── docs/
-    ├── ARCHITECTURE.md
-    ├── VIDEO_SCRIPT.md
-    └── LINKEDIN_POST.md
+├── screenshots/
+    ├── 01-overview.png
+    ├── 02-account-details.png
+    ├── 03-password-query-logs.png
+    ├── 04-authentication-methods.png
+    ├── 05-human-users.png
+    ├── 06-application-analysis.png
 ```
 
 ## Suggested repository description
