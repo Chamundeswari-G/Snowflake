@@ -6,6 +6,7 @@ table is loaded by Snowpipe, work through the steps below.
 ## Step 1: Identify the pipe loading the table
 
 -- Real-time (no latency, last 14 days)
+
 select distinct pipe_catalog_name || '.' || pipe_schema_name || '.' || pipe_name as snowpipe_name
 from snowflake.account_usage.copy_history
 where 
@@ -16,11 +17,13 @@ where
 
 
 -- Alternative: search pipe definitions
+
 SELECT pipe_catalog || '.' || pipe_schema || '.' || pipe_name, definition
 FROM snowflake.account_usage.pipes
 WHERE deleted IS NULL AND definition ILIKE '%<table_name>%';
 
 ## Step 2: Check the pipe status
+
 
 select system$pipe_status('<database_name>.<schema_name>.<pipe_name>');
 
@@ -46,7 +49,9 @@ Key fields: `executionState`, `pendingFileCount`, `lastIngestedTimestamp`,
 - Find the cause: a manual pause, an ownership transfer, or a dropped stage,
   table or file format (`STOPPED_*` states).
 - Fix the underlying issue, then resume:
+
   ALTER PIPE <database_name>.<schema_name>.<pipe_name> set pipe_execution_paused = FALSE;
+
 - If it was paused for more than 14 days (stale):
   select SYSTEM$PIPE_FORCE_RESUME('<db>.<schema>.<pipe>', 'staleness_check_override');
 
@@ -55,6 +60,7 @@ Key fields: `executionState`, `pendingFileCount`, `lastIngestedTimestamp`,
 Snowpipe defaults to `ON_ERROR = SKIP_FILE`: a file with errors is skipped and the
 rest of the queue keeps loading. If the pipe uses `ON_ERROR = CONTINUE`, bad rows
 are skipped and the file shows as *Partially loaded*.
+
 
 select file_name, stage_location, last_load_time, status,
        row_count, row_parsed, error_count,
@@ -68,10 +74,14 @@ where
       status in ('Load failed', 'Partially loaded')
 
 
+
 -- Pipe-level errors, this will not work if snowpipe has any transformations in copy statement of that pipe
+
+
 select * from table(validate_pipe_load(
        pipe_name => '<database_name>.<schema_name>.<pipe_name>',
        start_time => dateadd(hour, -24, current_timestamp())));
+
 
 - One-off bad file: correct it and re-stage it under a new name, or load it manually.
 - Recurring errors: send the source provider the error details so they fix the
@@ -79,6 +89,9 @@ select * from table(validate_pipe_load(
 
 ## Case 4: Invalid or non-UTF-8 characters
 
+
 alter file format <ff> set replace_invalid_characters = true;  -- replaced with u+fffd (�)
+
 -- or, if the source uses a different encoding:
+
 alter file format <ff> set encoding = 'iso-8859-1';
