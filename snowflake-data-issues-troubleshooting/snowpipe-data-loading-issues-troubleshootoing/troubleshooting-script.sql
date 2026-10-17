@@ -18,9 +18,9 @@ where
 
 -- Alternative: search pipe definitions
 
-SELECT pipe_catalog || '.' || pipe_schema || '.' || pipe_name, definition
-FROM snowflake.account_usage.pipes
-WHERE deleted IS NULL AND definition ILIKE '%<table_name>%';
+select pipe_catalog || '.' || pipe_schema || '.' || pipe_name, definition
+from snowflake.account_usage.pipes
+where deleted is null and definition ILIKE '%<table_name>%';
 
 ## Step 2: Check the pipe status
 
@@ -77,7 +77,6 @@ where
       lower(table_schema_name) = 'schema_name' and 
       lower(table_name)='table_name' and
       status in ('Load failed', 'Partially loaded')
-
 
 
 -- Pipe-level errors, this will not work if snowpipe has any transformations in copy statement of that pipe
