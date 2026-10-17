@@ -1,8 +1,8 @@
 # Snowflake Data Loading & Latency Troubleshooting (Snowpipe)
-
+/*
 When a business user or an alert reports that a table has missed its SLA and the
 table is loaded by Snowpipe, work through the steps below.
-
+*/
 ## Step 1: Identify the pipe loading the table
 
 -- Real-time (no latency, last 14 days)
@@ -27,7 +27,7 @@ WHERE deleted IS NULL AND definition ILIKE '%<table_name>%';
 
 select system$pipe_status('<database_name>.<schema_name>.<pipe_name>');
 
-Key fields: `executionState`, `pendingFileCount`, `lastIngestedTimestamp`,
+/* Key fields: `executionState`, `pendingFileCount`, `lastIngestedTimestamp`,
 `lastIngestedFilePath`, `notificationChannelName`, `lastReceivedMessageTimestamp`,
 `lastForwardedMessageTimestamp`, `error`.
 
@@ -40,26 +40,31 @@ Key fields: `executionState`, `pendingFileCount`, `lastIngestedTimestamp`,
 3. **New files exist but weren't loaded** → the event notification may have been
    missed. Check `lastReceivedMessageTimestamp` and the Event Grid subscription,
    then backfill:
-   ALTER PIPE <db>.<schema>.<pipe> REFRESH;   -- files staged in the last 7 days only
 4. **The file was re-sent with the same name** → Snowpipe skips files it loaded in
-   the last 14 days. Rename the file or load it with a manual COPY ... FORCE = TRUE.
+   the last 14 days. Rename the file or load it with a manual COPY ... FORCE = TRUE. */
+
+   ALTER PIPE <db>.<schema>.<pipe> REFRESH;   -- files staged in the last 7 days only
+
 
 ## Case 2: Pipe is PAUSED or STOPPED
 
+/*
 - Find the cause: a manual pause, an ownership transfer, or a dropped stage,
   table or file format (`STOPPED_*` states).
-- Fix the underlying issue, then resume:
+- Fix the underlying issue, then resume: */
 
   ALTER PIPE <database_name>.<schema_name>.<pipe_name> set pipe_execution_paused = FALSE;
 
-- If it was paused for more than 14 days (stale):
+*/ If it was paused for more than 14 days (stale): */
   select SYSTEM$PIPE_FORCE_RESUME('<db>.<schema>.<pipe>', 'staleness_check_override');
 
 ## Case 3: Some files or records were not ingested
 
+/*
 Snowpipe defaults to `ON_ERROR = SKIP_FILE`: a file with errors is skipped and the
 rest of the queue keeps loading. If the pipe uses `ON_ERROR = CONTINUE`, bad rows
-are skipped and the file shows as *Partially loaded*.
+are skipped and the file shows as *Partially loaded*
+*/.
 
 
 select file_name, stage_location, last_load_time, status,
@@ -83,9 +88,11 @@ select * from table(validate_pipe_load(
        start_time => dateadd(hour, -24, current_timestamp())));
 
 
+/*
 - One-off bad file: correct it and re-stage it under a new name, or load it manually.
 - Recurring errors: send the source provider the error details so they fix the
   file at the source.
+  */
 
 ## Case 4: Invalid or non-UTF-8 characters
 
